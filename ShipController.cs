@@ -8,9 +8,14 @@ public class ShipController : MonoBehaviour {
     private float TILT_MIN = 0.03f;
     private float TILT_MAX = 0.2f;
 
+    private Rigidbody2D rb2d;
+    private const float KNOCK_BACK_FORCE = 1.5f;
     private Vector3 forwardSpeed;
 
 	void Start(){
+
+        rb2d = GetComponent<Rigidbody2D>();
+
         forwardSpeed = Vector3.up;
 	}
 
@@ -54,4 +59,10 @@ public class ShipController : MonoBehaviour {
         //transform.eulerAngles = new Vector3(oldAngles.x, oldAngles.y, oldAngles.z + (tiltValue * ROTATE_AMOUNT));
         transform.eulerAngles = new Vector3(0, 0, oldAngles.z + (tiltValue * ROTATE_AMOUNT));
 	}
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        // Something hits the AI ship, apply force for knock back effect
+        rb2d.velocity = other.gameObject.transform.up * KNOCK_BACK_FORCE;
+    }
 }
