@@ -49,9 +49,18 @@ public class ShipAIController : MonoBehaviour {
             {
                 CannonSpawnPoint spawnPoint = cannonSpawnPoints[m];
                 GameObject rb2d = (GameObject) Instantiate(cannonBallPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation) as GameObject;
-
-
+               
+                // Shoot!
                 rb2d.GetComponent<Rigidbody2D>().AddRelativeForce(new Vector3(0, 0.6f, 0) * Time.fixedDeltaTime);
+
+                
+                // Set the life time of the cannon (range effect)
+                float lifeTime = Random.Range(1f, 2.2f);
+                CannonBallEnemyScript cannonBallEnemy = rb2d.GetComponent<CannonBallEnemyScript>();
+                cannonBallEnemy.SetLifeTime(lifeTime);
+                
+
+                //((ParticleSystem) Instantiate(particle, transform.position, transform.rotation) as ParticleSystem));
             }
 
         }

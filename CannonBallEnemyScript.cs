@@ -4,12 +4,18 @@ using System.Collections;
 public class CannonBallEnemyScript : MonoBehaviour
 {
 
-    public ParticleSystem particle;
+    public ParticleSystem explosionParticle;
+    public ParticleSystem waterParticle;
 
-    void Awake()
+    public void SetLifeTime(float lifeTime)
     {
-        // didn't collide to anything w/n 2 seconds (range), just destroy it.
-        Destroy(gameObject, 2f);
+        // didn't collide to anything w/n lifetime (range), just destroy it.
+        Destroy(gameObject, lifeTime);
+    }
+
+    void OnDestroy()
+    {
+        ((ParticleSystem)Instantiate(waterParticle, transform.position, transform.rotation) as ParticleSystem).Play();
     }
 
     void OnCollisionEnter2D(Collision2D other)
@@ -22,8 +28,8 @@ public class CannonBallEnemyScript : MonoBehaviour
         }
 
         // Instantiate an explotion particle object where it collided
-        ((ParticleSystem)Instantiate(particle, transform.position, transform.rotation) as ParticleSystem).Play();
-
+        ((ParticleSystem)Instantiate(explosionParticle, transform.position, transform.rotation) as ParticleSystem).Play();
+        Debug.Log("fire");
         //other.gameObject.GetComponent<Rigidbody2D>().AddForce(this.gameObject.transform.forward * 100f);
 
         // Destroy this cannon ball
@@ -35,7 +41,7 @@ public class CannonBallEnemyScript : MonoBehaviour
     {
 
         // Instantiate an explotion particle object where it collided
-        ((ParticleSystem)Instantiate(particle, transform.position, transform.rotation) as ParticleSystem).Play();
+        ((ParticleSystem)Instantiate(explosionParticle, transform.position, transform.rotation) as ParticleSystem).Play();
 
         // Destroy this cannon ball
         Destroy(gameObject);
