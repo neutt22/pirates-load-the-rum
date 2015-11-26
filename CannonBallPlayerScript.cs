@@ -4,7 +4,10 @@ using System.Collections;
 public class CannonBallPlayerScript : MonoBehaviour
 {
 
-    public ParticleSystem particle;
+    public ParticleSystem explosionParticlePrefab;
+    public ParticleSystem waterParticlePrefab;
+
+    private bool collided = false;
 
     void Awake()
     {
@@ -13,11 +16,22 @@ public class CannonBallPlayerScript : MonoBehaviour
         Destroy(gameObject, 2f);
     }
 
+    void OnDestroy()
+    {
+        // If it didn't collided with anything, just blow the water.
+        if(collided == false)
+        {
+            ((ParticleSystem)Instantiate(waterParticlePrefab, transform.position, transform.rotation) as ParticleSystem).Play();
+        }
+    }
+
     void OnCollisionEnter2D(Collision2D other)
     {
+        // Collided into something
+        collided = true;
 
         // Instantiate an explotion particle object where it collided
-        ((ParticleSystem)Instantiate(particle, transform.position, transform.rotation) as ParticleSystem).Play();
+        ((ParticleSystem)Instantiate(explosionParticlePrefab, transform.position, transform.rotation) as ParticleSystem).Play();
 
         //other.gameObject.GetComponent<Rigidbody2D>().AddForce(this.gameObject.transform.forward * 100f);
 
@@ -30,7 +44,7 @@ public class CannonBallPlayerScript : MonoBehaviour
     {
 
         // Instantiate an explotion particle object where it collided
-        ((ParticleSystem)Instantiate(particle, transform.position, transform.rotation) as ParticleSystem).Play();
+        ((ParticleSystem)Instantiate(explosionParticlePrefab, transform.position, transform.rotation) as ParticleSystem).Play();
 
         // Destroy this cannon ball
         Destroy(gameObject);

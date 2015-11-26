@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ShipShooter : MonoBehaviour {
 
-	public GameObject cannonBall;
+	public GameObject cannonBallPrefab;
 	public Transform cannonBallSpawn;
 
 	private bool fired = false;
@@ -19,13 +19,13 @@ public class ShipShooter : MonoBehaviour {
 	void FixedUpdate(){
 		if(fired){
 			fired = false;
-			GameObject rb2d = (GameObject) Instantiate(cannonBall, cannonBallSpawn.transform.position, cannonBallSpawn.rotation) as GameObject;
+			GameObject rb2d = (GameObject) Instantiate(cannonBallPrefab, cannonBallSpawn.transform.position, cannonBallSpawn.rotation) as GameObject;
             rb2d.GetComponent<Rigidbody2D>().AddRelativeForce(new Vector3(0,0.6f,0) * Time.fixedDeltaTime);
 		}
 	}
 
 	public void FireRight(){
-		GameObject rb2d = (GameObject) Instantiate(cannonBall, cannonBallSpawn.transform.position, cannonBallSpawn.rotation) as GameObject;
+		GameObject rb2d = (GameObject) Instantiate(cannonBallPrefab, cannonBallSpawn.transform.position, cannonBallSpawn.rotation) as GameObject;
 		rb2d.GetComponent<Rigidbody2D>().AddRelativeForce(new Vector3(0,0.6f,0) * Time.fixedDeltaTime);
 	}
 }

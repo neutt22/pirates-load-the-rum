@@ -6,8 +6,7 @@ public class CannonBallEnemyScript : MonoBehaviour
 
     public ParticleSystem explosionParticle;
     public ParticleSystem waterParticle;
-
-    private bool exploded = false;
+   
     private bool collided = false;
 
     public void SetLifeTime(float lifeTime)
@@ -32,13 +31,9 @@ public class CannonBallEnemyScript : MonoBehaviour
         // If this enemy cannon ball hits other "enemy" tag, then don't blow it.
         if (other.gameObject.tag == "Enemy")
         {
-            exploded = false;
             Destroy(this.gameObject);
             return;
         }
-
-        // This cannon ball gameobject hits a player, explode it.
-        exploded = true;
 
         // Instantiate an explotion particle object where it collided
         ((ParticleSystem)Instantiate(explosionParticle, transform.position, transform.rotation) as ParticleSystem).Play();
