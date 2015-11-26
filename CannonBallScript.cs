@@ -15,11 +15,14 @@ public class CannonBallScript : MonoBehaviour {
 
 		// Instantiate an explotion particle object where it collided
 		((ParticleSystem) Instantiate(particle, transform.position, transform.rotation) as ParticleSystem).Play();
-		
-		// Destroy this cannon ball
-		Destroy(gameObject);
+
+        //other.gameObject.GetComponent<Rigidbody2D>().AddForce(this.gameObject.transform.forward * 100f);
+
+        // Destroy this cannon ball
+        Destroy(gameObject);
 	}
 	
+    // Prolly will never be triggered due to isTrigger is false
 	void OnTriggerEnter2D(Collider2D other){
 
 		// Instantiate an explotion particle object where it collided

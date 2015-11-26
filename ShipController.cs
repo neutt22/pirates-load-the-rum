@@ -4,25 +4,15 @@ using UnityEngine.UI;
 
 public class ShipController : MonoBehaviour {
 
-	public GameObject waterWaveParticle;
+    private float ROTATE_AMOUNT = 1f; // at full tilt, rotate at 2 degrees per update
+    private float TILT_MIN = 0.03f;
+    private float TILT_MAX = 0.2f;
 
-	private WaitForSeconds waterWaveOff;
-	private WaitForSeconds waterWaveOn;
-	private Vector3 speed;
-	private Vector3 forwardSpeed;
+    private Vector3 forwardSpeed;
 
 	void Start(){
-		waterWaveOff = new WaitForSeconds(2);
-		waterWaveOn = new WaitForSeconds(0);
-
-		speed = Vector3.one;
-		forwardSpeed = new Vector3(0, 1f, 0);
+        forwardSpeed = Vector3.up;
 	}
-
-
-	private float ROTATE_AMOUNT = 0.5f; // at full tilt, rotate at 2 degrees per update
-	private float TILT_MIN = 0.05f;
-	private float TILT_MAX = 0.2f;
 
 	private float GetTiltValue(){
 		// Work out magnitude of tilt
@@ -49,24 +39,19 @@ public class ShipController : MonoBehaviour {
 		if(Input.GetKey(KeyCode.W))
 			transform.Translate(Vector3.up * Time.deltaTime);
 		*/
+
 		if(Input.GetKey(KeyCode.A))
 			transform.Rotate(Vector3.forward + new Vector3(0,0,1f) * Time.deltaTime);
 
 		if(Input.GetKey(KeyCode.D))
 			transform.Rotate(-Vector3.forward + new Vector3(0,0,1f) * Time.deltaTime);
 
-
-		transform.Translate(forwardSpeed * Time.deltaTime);
+        //transform.position += forwardSpeed * Time.deltaTime; // <- trouble
+        transform.Translate(forwardSpeed * Time.deltaTime);
 
 		float tiltValue = GetTiltValue();
-		Vector3 oldAngles = this.transform.eulerAngles;
-		this.transform.eulerAngles = new Vector3(oldAngles.x, oldAngles.y, oldAngles.z + (tiltValue * ROTATE_AMOUNT));
-	}
-
-	public Text text;
-
-	private IEnumerator CheckWaterWave(bool enabled, WaitForSeconds wait){
-		yield return wait;
-		waterWaveParticle.SetActive(enabled);
+		Vector3 oldAngles = transform.eulerAngles;
+        //transform.eulerAngles = new Vector3(oldAngles.x, oldAngles.y, oldAngles.z + (tiltValue * ROTATE_AMOUNT));
+        transform.eulerAngles = new Vector3(0, 0, oldAngles.z + (tiltValue * ROTATE_AMOUNT));
 	}
 }

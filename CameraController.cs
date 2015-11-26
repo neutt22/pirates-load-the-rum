@@ -5,14 +5,25 @@ public class CameraController : MonoBehaviour {
 
 	public Transform ship;
 
-	// Follow the player's ship smoothly
+    private Vector3 movement;
+    private const float Z_AXIS = -10f;
+
+    void Start()
+    {
+        movement = Vector3.zero;
+    }
+
 	void Update () {
 
+        // Lerp the X and Y axis
 		float lerpX = Mathf.Lerp(transform.position.x, ship.position.x, 0.01f);
 		float lerpY = Mathf.Lerp(transform.position.y, ship.position.y, 0.01f);
 
-		Vector3 movement = new Vector3(lerpX, lerpY, -10f);
+        // Update the movement vector
+        movement.x = lerpX;
+        movement.y = lerpY;
+        movement.z = Z_AXIS;
 
-		transform.position = movement;
+        transform.position = movement;
 	}
 }
