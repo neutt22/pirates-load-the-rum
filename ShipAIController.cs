@@ -14,16 +14,12 @@ public class ShipAIController : MonoBehaviour {
     {
         rb2d = GetComponent<Rigidbody2D>();
 
-        StartCoroutine(Shoot());
+        StartCoroutine(InitShoot());
 	}
 
     void Update()
     {
-        for(int m = 0; m < cannonSpawnPoints.Length; m++)
-        {
-            CannonSpawnPoint spawnPoint = cannonSpawnPoints[m];
-            Debug.DrawLine(spawnPoint.startPoint.position, spawnPoint.endPoint.position);
-        }
+
     }
 
     void OnCollisionEnter2D(Collision2D other)
@@ -39,7 +35,7 @@ public class ShipAIController : MonoBehaviour {
         rb2d.velocity = other.gameObject.transform.up * KNOCK_BACK_FORCE;
     }
 
-    private IEnumerator Shoot()
+    private IEnumerator InitShoot()
     {
         while (true)
         {
@@ -47,23 +43,29 @@ public class ShipAIController : MonoBehaviour {
             
             for (int m = 0; m < cannonSpawnPoints.Length; m++)
             {
-                CannonSpawnPoint spawnPoint = cannonSpawnPoints[m];
-                GameObject rb2d = (GameObject) Instantiate(cannonBallPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation) as GameObject;
-               
-                // Shoot!
-                rb2d.GetComponent<Rigidbody2D>().AddRelativeForce(new Vector3(0, 0.6f, 0) * Time.fixedDeltaTime);
-
-                
-                // Set the life time of the cannon (range effect)
                 float lifeTime = Random.Range(1f, 2.2f);
-                CannonBallEnemyScript cannonBallEnemy = rb2d.GetComponent<CannonBallEnemyScript>();
-                cannonBallEnemy.SetLifeTime(lifeTime);
-                
 
-                //((ParticleSystem) Instantiate(particle, transform.position, transform.rotation) as ParticleSystem));
+                CannonSpawnPoint spawnPoint = cannonSpawnPoints[m];
+
+                StartCoroutine(Shoot(lifeTime, spawnPoint));
             }
 
         }
+    }
+
+    private IEnumerator Shoot(float lifeTime, CannonSpawnPoint cannonSpawnPoint)
+    {
+        float wait = Random.Range(0f, 0.5f);
+
+        yield return new WaitForSeconds(wait);
+
+        GameObject rb2d = (GameObject)Instantiate(cannonBallPrefab, cannonSpawnPoint.transform.position, cannonSpawnPoint.transform.rotation) as GameObject;
+        
+        // Shoot!
+        rb2d.GetComponent<Rigidbody2D>().AddRelativeForce(new Vector3(0, 0.6f, 0) * Time.fixedDeltaTime);
+
+        CannonBallEnemyScript cannonBallEnemy = rb2d.GetComponent<CannonBallEnemyScript>();
+        cannonBallEnemy.SetLifeTime(lifeTime);
     }
 
 }

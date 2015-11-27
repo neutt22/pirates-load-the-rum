@@ -38,14 +38,13 @@ public class ShipController : MonoBehaviour {
 	}
 
 	void Update () {
-
-
-		/*
+        
+        /*
 		if(Input.GetKey(KeyCode.W))
 			transform.Translate(Vector3.up * Time.deltaTime);
 		*/
 
-		if(Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A))
 			transform.Rotate(Vector3.forward + new Vector3(0,0,1f) * Time.deltaTime);
 
 		if(Input.GetKey(KeyCode.D))
