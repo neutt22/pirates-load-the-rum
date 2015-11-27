@@ -8,31 +8,34 @@ public class ShipAIShooter : MonoBehaviour {
 
     private WaitForSeconds waitTime;
     private bool shoot = false;
+    private Vector3 cannonForce;
 
     void Start()
     {
         waitTime = new WaitForSeconds(2);
 
-        StartCoroutine(ShootLoop());
+        cannonForce = new Vector3(0, 0.6f, 0);
     }
 
     private IEnumerator ShootLoop()
     {
-        while (true)
+        yield return waitTime;
+
+        while (shoot)
         {
-            if (shoot)
-            {
-                for (int m = 0; m < cannonSpawnPoints.Length; m++)
-                {
-                    CannonSpawnPoint cannonSpawnPoint = cannonSpawnPoints[m];
-
-                    float lifeTime = Random.Range(1f, 2.2f);
-
-                    StartCoroutine(Shoot(lifeTime, cannonSpawnPoint));
-                }
-            }
             yield return waitTime;
+
+            for (int m = 0; m < cannonSpawnPoints.Length; m++)
+            {
+                CannonSpawnPoint cannonSpawnPoint = cannonSpawnPoints[m];
+
+                float lifeTime = Random.Range(1f, 2.2f);
+
+                StartCoroutine(Shoot(lifeTime, cannonSpawnPoint));
+            }
         }
+
+        yield return null;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -49,7 +52,9 @@ public class ShipAIShooter : MonoBehaviour {
                 StartCoroutine(Shoot(lifeTime, cannonSpawnPoint));
             }
 
+            // Keep on loop shooting until the player exits the shooting zone area
             shoot = true;
+            StartCoroutine(ShootLoop());
         }
     }
 
@@ -65,14 +70,14 @@ public class ShipAIShooter : MonoBehaviour {
     private IEnumerator Shoot(float lifeTime, CannonSpawnPoint cannonSpawnPoint)
     {
         // Favorite effect ;)
-        float wait = Random.Range(0f, 0.5f);
+        float wait = Random.Range(0f, 0.3f);
         yield return new WaitForSeconds(wait);
 
         // Make an AI cannon ball
         GameObject rb2d = (GameObject)Instantiate(cannonBallPrefab, cannonSpawnPoint.transform.position, cannonSpawnPoint.transform.rotation) as GameObject;
 
         // Shoot!
-        rb2d.GetComponent<Rigidbody2D>().AddRelativeForce(new Vector3(0, 0.6f, 0) * Time.fixedDeltaTime);
+        rb2d.GetComponent<Rigidbody2D>().AddRelativeForce(cannonForce * Time.deltaTime);
 
         // Lifetime of the cannon ball before destroying
         CannonBallEnemyScript cannonBallEnemy = rb2d.GetComponent<CannonBallEnemyScript>();
