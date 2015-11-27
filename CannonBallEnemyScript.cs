@@ -26,6 +26,7 @@ public class CannonBallEnemyScript : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
+        
         collided = true;
 
         // If this enemy cannon ball hits other "enemy" tag, then don't blow it.
@@ -40,16 +41,7 @@ public class CannonBallEnemyScript : MonoBehaviour
 
         // Destroy this cannon ball
         Destroy(gameObject);
+        
     }
 
-    // Prolly will never be triggered due to isTrigger is false
-    void OnTriggerEnter2D(Collider2D other)
-    {
-
-        // Instantiate an explotion particle object where it collided
-        ((ParticleSystem)Instantiate(explosionParticle, transform.position, transform.rotation) as ParticleSystem).Play();
-
-        // Destroy this cannon ball
-        Destroy(gameObject);
-    }
 }

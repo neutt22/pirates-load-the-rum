@@ -39,14 +39,4 @@ public class CannonBallPlayerScript : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // Prolly will never be triggered due to isTrigger is false
-    void OnTriggerEnter2D(Collider2D other)
-    {
-
-        // Instantiate an explotion particle object where it collided
-        ((ParticleSystem)Instantiate(explosionParticlePrefab, transform.position, transform.rotation) as ParticleSystem).Play();
-
-        // Destroy this cannon ball
-        Destroy(gameObject);
-    }
 }

@@ -61,7 +61,7 @@ public class ShipController : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        // Something hits the AI ship, apply force for knock back effect
+        // Something hits the player ship, apply force for knock back effect
         rb2d.velocity = other.gameObject.transform.up * KNOCK_BACK_FORCE;
     }
 }
