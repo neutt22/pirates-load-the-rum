@@ -6,12 +6,41 @@ public class ShipAIShooter : MonoBehaviour {
     public CannonSpawnPoint[] cannonSpawnPoints;
     public GameObject cannonBallPrefab;
 
+    private WaitForSeconds waitTime;
+    private bool shoot = false;
+
+    void Start()
+    {
+        waitTime = new WaitForSeconds(2);
+
+        StartCoroutine(ShootLoop());
+    }
+
+    private IEnumerator ShootLoop()
+    {
+        while (true)
+        {
+            if (shoot)
+            {
+                for (int m = 0; m < cannonSpawnPoints.Length; m++)
+                {
+                    CannonSpawnPoint cannonSpawnPoint = cannonSpawnPoints[m];
+
+                    float lifeTime = Random.Range(1f, 2.2f);
+
+                    StartCoroutine(Shoot(lifeTime, cannonSpawnPoint));
+                }
+            }
+            yield return waitTime;
+        }
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         // A player is inside an AI shooting zone, shoot it (depends on spawn points)
         if(other.gameObject.tag == "Player")
         {
-            for(int m = 0; m < cannonSpawnPoints.Length; m++)
+            for (int m = 0; m < cannonSpawnPoints.Length; m++)
             {
                 CannonSpawnPoint cannonSpawnPoint = cannonSpawnPoints[m];
 
@@ -19,6 +48,17 @@ public class ShipAIShooter : MonoBehaviour {
 
                 StartCoroutine(Shoot(lifeTime, cannonSpawnPoint));
             }
+
+            shoot = true;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        // A player exits the AI shooting zone
+        if(other.gameObject.tag == "Player")
+        {
+            shoot = false;
         }
     }
 
