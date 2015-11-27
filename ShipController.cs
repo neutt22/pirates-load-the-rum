@@ -12,6 +12,9 @@ public class ShipController : MonoBehaviour {
     private const float KNOCK_BACK_FORCE = 1.5f;
     private Vector3 forwardSpeed;
 
+    // For camera shake
+    public CameraController cameraController;
+
 	void Start(){
 
         rb2d = GetComponent<Rigidbody2D>();
@@ -63,5 +66,8 @@ public class ShipController : MonoBehaviour {
     {
         // Something hits the player ship, apply force for knock back effect
         rb2d.velocity = other.gameObject.transform.up * KNOCK_BACK_FORCE;
+
+        // Adjust camera's shake value to shake the screen
+        cameraController.ShakeIntensity = CameraController.SHAKE_INTESITY_VALUE;
     }
 }

@@ -23,7 +23,7 @@ public class ShipAIShooter : MonoBehaviour {
 
         while (shoot)
         {
-            yield return waitTime;
+            yield return waitTime; //Время на один шаг в секунд
 
             for (int m = 0; m < cannonSpawnPoints.Length; m++)
             {
