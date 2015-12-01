@@ -23,8 +23,6 @@ public class ShipAIShooter : MonoBehaviour {
 
         while (shoot)
         {
-            yield return waitTime; //Время на один шаг в секунд
-
             for (int m = 0; m < cannonSpawnPoints.Length; m++)
             {
                 CannonSpawnPoint cannonSpawnPoint = cannonSpawnPoints[m];
@@ -33,6 +31,8 @@ public class ShipAIShooter : MonoBehaviour {
 
                 StartCoroutine(Shoot(lifeTime, cannonSpawnPoint));
             }
+
+            yield return waitTime;
         }
 
         yield return null;
@@ -53,8 +53,11 @@ public class ShipAIShooter : MonoBehaviour {
             }
 
             // Keep on loop shooting until the player exits the shooting zone area
-            shoot = true;
-            StartCoroutine(ShootLoop());
+            if(shoot != true)
+            {
+                shoot = true;
+                StartCoroutine(ShootLoop());
+            }
         }
     }
 

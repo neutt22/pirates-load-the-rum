@@ -49,8 +49,8 @@ public class CameraController : MonoBehaviour {
         {
             // Follow the player ship
             // Lerp the X and Y axis
-            float lerpX = Mathf.Lerp(transform.position.x, ship.position.x, 0.01f);
-            float lerpY = Mathf.Lerp(transform.position.y, ship.position.y, 0.01f);
+            float lerpX = Mathf.Lerp(transform.position.x, ship.position.x, 0.015f);
+            float lerpY = Mathf.Lerp(transform.position.y, ship.position.y, 0.015f);
 
             // Update the movement vector
             movement.x = lerpX;

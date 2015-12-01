@@ -11,12 +11,13 @@ public class CannonBallEnemyScript : MonoBehaviour
 
     public void SetLifeTime(float lifeTime)
     {
-        // didn't collide to anything w/n lifetime (range), just destroy it.
+        // Didn't collide with anything w/n lifetime (range), just destroy it.
         Destroy(gameObject, lifeTime);
     }
 
     void OnDestroy()
     {
+        // Explode water particle because it didn't collide with anything
         if (collided == false)
         {
             ((ParticleSystem)Instantiate(waterParticle, transform.position, transform.rotation) as ParticleSystem).Play();
@@ -26,7 +27,7 @@ public class CannonBallEnemyScript : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        
+        // Collided with something
         collided = true;
 
         // If this enemy cannon ball hits other "enemy" tag, then don't blow it.
