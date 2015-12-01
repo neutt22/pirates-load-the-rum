@@ -40,6 +40,10 @@ public class ShipAIShooter : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        // Already shooting, no need to shoot again.
+        if (shoot)
+            return;
+
         // A player is inside an AI shooting zone, shoot it (depends on spawn points)
         if(other.gameObject.tag == "Player")
         {
@@ -53,11 +57,8 @@ public class ShipAIShooter : MonoBehaviour {
             }
 
             // Keep on loop shooting until the player exits the shooting zone area
-            if(shoot != true)
-            {
-                shoot = true;
-                StartCoroutine(ShootLoop());
-            }
+            shoot = true;
+            StartCoroutine(ShootLoop());
         }
     }
 
@@ -65,9 +66,7 @@ public class ShipAIShooter : MonoBehaviour {
     {
         // A player exits the AI shooting zone
         if(other.gameObject.tag == "Player")
-        {
             shoot = false;
-        }
     }
 
     private IEnumerator Shoot(float lifeTime, CannonSpawnPoint cannonSpawnPoint)
@@ -80,7 +79,7 @@ public class ShipAIShooter : MonoBehaviour {
         GameObject rb2d = (GameObject)Instantiate(cannonBallPrefab, cannonSpawnPoint.transform.position, cannonSpawnPoint.transform.rotation) as GameObject;
 
         // Shoot!
-        rb2d.GetComponent<Rigidbody2D>().AddRelativeForce(cannonForce * Time.deltaTime);
+        rb2d.GetComponent<Rigidbody2D>().AddRelativeForce(cannonForce * Time.fixedDeltaTime);
 
         // Lifetime of the cannon ball before destroying
         CannonBallEnemyScript cannonBallEnemy = rb2d.GetComponent<CannonBallEnemyScript>();
