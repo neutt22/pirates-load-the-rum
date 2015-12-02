@@ -45,7 +45,7 @@ public class ShipAIShooter : MonoBehaviour {
             return;
 
         // A player is inside an AI shooting zone, shoot it (depends on spawn points)
-        if(other.gameObject.tag == "Player")
+        if(other.gameObject.CompareTag("Player"))
         {
             for (int m = 0; m < cannonSpawnPoints.Length; m++)
             {
@@ -65,7 +65,7 @@ public class ShipAIShooter : MonoBehaviour {
     void OnTriggerExit2D(Collider2D other)
     {
         // A player exits the AI shooting zone
-        if(other.gameObject.tag == "Player")
+        if(other.gameObject.CompareTag("Player"))
             shoot = false;
     }
 

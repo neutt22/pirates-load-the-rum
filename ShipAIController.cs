@@ -18,7 +18,7 @@ public class ShipAIController : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D other)
     {
         // If this ship gets hit by other player's damage, then knock it back and damage it.
-        if(other.gameObject.tag == "PlayerDamage")
+        if(other.gameObject.CompareTag("PlayerDamage"))
         {
             // Player damage hits the AI ship, apply force for knock back effect
             rb2d.velocity = other.gameObject.transform.up * KNOCK_BACK_FORCE;
